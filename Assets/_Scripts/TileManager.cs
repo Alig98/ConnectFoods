@@ -8,11 +8,13 @@ public class TileManager : SingletonBase<TileManager>
     private Tile[,] m_AllTiles;
     private bool m_IsFirstUpdate;
     private List<Tile> m_StandByTiles = new List<Tile>();
+    private TileInfos m_TileInfos;
 
     private void Start()
     {
         var gameManager = GameManager.Instance;
         m_AllTiles = new Tile[gameManager.RowCount, gameManager.ColumnCount];
+        m_TileInfos = gameManager.TileInfos;
     }
 
     private void Update()
@@ -21,33 +23,7 @@ public class TileManager : SingletonBase<TileManager>
         {
             FindNeighbourTilesForAll();
             m_IsFirstUpdate = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            for (int i = 0; i < m_AllTiles.GetLength(0); i++)
-            {
-                for (int j = 0; j < m_AllTiles.GetLength(1); j++)
-                {
-                    m_AllTiles[i,j].GiveRandomFruit();
-                }
-            }
-        }
-        
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            ControlForFall();
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            for (int i = m_AllTiles.GetLength(0)-1; i >= 0 ; i--)
-            {
-                for (int j = m_AllTiles.GetLength(1)-2; j >= 0; j--)
-                {
-                    Debug.Log($"i = {i} , j = {j} , {m_AllTiles[i,j]}");
-                }
-            }
+            ControlForAnyMove();
         }
     }
 
@@ -69,6 +45,8 @@ public class TileManager : SingletonBase<TileManager>
 
     public void FindNeighbourTiles(Tile tile)
     {
+        tile.ClearNeighbourTiles();
+        
         for (int i = -1; i < 2; i++)
         {
             for (int j = -1; j < 2; j++)
@@ -106,6 +84,7 @@ public class TileManager : SingletonBase<TileManager>
         if (m_StandByTiles.Count > 0)
         {
             AdjustGrid();
+            Invoke(nameof(ControlForAnyMove),m_TileInfos.FallTime);
         }
     }
     
@@ -137,5 +116,59 @@ public class TileManager : SingletonBase<TileManager>
                 m_AllTiles[x, i] = null;
             }
         }
+    }
+
+    private void ControlForAnyMove()
+    {
+        for (int i = 0; i < m_AllTiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < m_AllTiles.GetLength(1); j++)
+            {
+                List<Tile> visitedTiles = new List<Tile>();
+                var control = BFS(m_AllTiles[i, j], 1,visitedTiles);
+                if (control >= 3)
+                {
+                    return;
+                }
+            }
+        }
+
+        StartCoroutine(ShuffleTiles());
+    }
+    
+    private int BFS(Tile currentTile,int count,List<Tile> visitedTiles)
+    {
+        if (count>=3) return count;
+
+        visitedTiles.Add(currentTile);
+        var firstNodeNeighbours = currentTile.NeighbourTiles;
+        var targetFood = currentTile.TileType;
+        
+        for (int i = 0; i < firstNodeNeighbours.Count; i++)
+        {
+            if (firstNodeNeighbours[i].TileType == targetFood && !visitedTiles.Contains(firstNodeNeighbours[i]))
+            {
+                visitedTiles.Add(firstNodeNeighbours[i]);
+                
+                count = BFS(firstNodeNeighbours[i], count+1,visitedTiles);
+            }
+        }
+
+        return count;
+    }
+
+    private IEnumerator ShuffleTiles()
+    {
+        for (int i = 0; i < m_AllTiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < m_AllTiles.GetLength(1); j++)
+            {
+                m_AllTiles[i,j].SetState(TileState.Shuffle);
+            }
+        }
+
+        yield return new WaitForSeconds(m_TileInfos.ShuffleTime);
+        
+        ControlForAnyMove();
     }
 }

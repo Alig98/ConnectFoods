@@ -7,20 +7,23 @@ using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
-    public List<Sprite> TileTypeSprites;
     public SpriteRenderer ObjectModel;
     private TileState m_TileState;
     private TileTypes m_TileType;
     private Vector3 m_StartScale;
     private List<Tile> m_NeighbourTiles = new List<Tile>();
     private Vector2Int m_TileIndex;
+    private TileInfos m_TileInfos;
 
     public TileTypes TileType => m_TileType;
     public TileState TileState => m_TileState;
     public Vector2Int TileIndex => m_TileIndex;
 
+    public List<Tile> NeighbourTiles => m_NeighbourTiles;
+
     private void Start()
     {
+        m_TileInfos = GameManager.Instance.TileInfos;
         GiveRandomFruit();
         m_TileState = TileState.Idle;
         m_StartScale = transform.localScale;
@@ -28,9 +31,10 @@ public class Tile : MonoBehaviour
 
     public void GiveRandomFruit()
     {
-        var tileTypeIndex = Random.Range(0, TileTypeSprites.Count);
+        var tileTypeSprites = m_TileInfos.TileSprites;
+        var tileTypeIndex = Random.Range(0, tileTypeSprites.Count);
         m_TileType = (TileTypes) tileTypeIndex;
-        ObjectModel.sprite = TileTypeSprites[tileTypeIndex];
+        ObjectModel.sprite = tileTypeSprites[tileTypeIndex];
     }
 
     private void TileStateChanged()
@@ -56,6 +60,9 @@ public class Tile : MonoBehaviour
                 SetTileIndex(m_TileIndex.x,-1);
                 GiveRandomFruit();
                 break;
+            case TileState.Shuffle:
+                ShuffleTile();
+                break;
         }
     }
 
@@ -76,6 +83,11 @@ public class Tile : MonoBehaviour
         m_NeighbourTiles.Add(tile);
     }
 
+    public void ClearNeighbourTiles()
+    {
+        m_NeighbourTiles.Clear();
+    }
+
     public void SetTileIndex(int x, int y, bool useTween = false)
     {
         m_TileIndex = new Vector2Int(x, y);
@@ -86,7 +98,7 @@ public class Tile : MonoBehaviour
         if (useTween)
         {
             transform.DOKill();
-            transform.DOMove(targetPos,.2f);
+            transform.DOMove(targetPos,m_TileInfos.FallTime);
         }
         else
         {
@@ -103,6 +115,23 @@ public class Tile : MonoBehaviour
 
         return false;
     }
+
+    public void ShuffleTile()
+    {
+        var startPosition = transform.position;
+
+        transform.DOMove(Vector3.zero, m_TileInfos.ShuffleMoveTime);
+        transform.DOShakeRotation(m_TileInfos.ShuffleRotationTime);
+        transform.DOMove(startPosition, m_TileInfos.ShuffleMoveTime)
+            .SetDelay(m_TileInfos.ShuffleRotationTime-m_TileInfos.ShuffleMoveTime);
+        transform.DORotate(Vector3.zero, m_TileInfos.ShuffleMoveTime)
+            .SetDelay(m_TileInfos.ShuffleRotationTime).OnComplete((() =>
+        {
+            SetState(TileState.Idle);
+        }));
+        
+        GiveRandomFruit();
+    }
 }
 public enum TileTypes
 {
@@ -110,7 +139,10 @@ public enum TileTypes
     Banana = 1,
     Apple = 2,
     Berry = 3,
-    DragonFruit = 4
+    DragonFruit = 4,
+    DragonFruit2 = 5,
+    DragonFruit3 = 6,
+    DragonFruit4 = 7,
 }
 
 public enum TileState
@@ -119,5 +151,6 @@ public enum TileState
     Selected,
     Fall,
     Pop,
-    StandBy
+    StandBy,
+    Shuffle
 }

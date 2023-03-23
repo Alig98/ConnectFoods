@@ -38,7 +38,8 @@ public class InputManager : MonoBehaviour
                     var hitTile = hit.collider.GetComponent<Tile>();
 
                     if (hitTile.TileType == m_SelectedTile.TileType && !m_SelectedTiles.Contains(hitTile)
-                                                                    && m_SelectedTile.ControlIfNeighbour(hitTile))
+                                                                    && m_SelectedTile.ControlIfNeighbour(hitTile) 
+                                                                    && hitTile.TileState == TileState.Idle)
                     {
                         hitTile.SetState(TileState.Selected);
                         m_SelectedTiles.Add(hitTile);

@@ -229,8 +229,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridStartPoint: {fileID: 694671464}
   GridEndPoint: {fileID: 278620796}
-  RowCount: 6
-  ColumnCount: 6
+  RowCount: 3
+  ColumnCount: 3
+  TileInfos: {fileID: 11400000, guid: 41c1fbcf08b4a2e41bd5a2dc1c3e8fb0, type: 2}
 --- !u!4 &544557874
 Transform:
   m_ObjectHideFlags: 0

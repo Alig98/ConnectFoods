@@ -15,29 +15,28 @@ public class GridCreator : MonoBehaviour
 
     private void CreateGrid()
     {
-        var gridStartPoint = GameManager.Instance.GridStartPoint;
-        var gridEndPoint = GameManager.Instance.GridEndPoint;
-        var rowCount = GameManager.Instance.RowCount;
-        var columnCount = GameManager.Instance.ColumnCount;
+        var gameManager = GameManager.Instance;
+        
+        var gridStartPoint = gameManager.GridStartPoint;
+        var gridEndPoint = gameManager.GridEndPoint;
+        var rowCount = gameManager.RowCount;
+        var columnCount = gameManager.ColumnCount;
         
         var tileSizeForRow = Mathf.Abs((gridStartPoint.position.x - gridEndPoint.position.x)) / (rowCount-1);
         var tileSizeForColumn = Mathf.Abs((gridStartPoint.position.y - gridEndPoint.position.y)) / (columnCount-1);
 
-        var tileSize = (tileSizeForColumn > tileSizeForRow ? tileSizeForRow : tileSizeForColumn);
-        tileSize = tileSize > 1 ? 1 : tileSize;
+        var tileSize = Mathf.Min(tileSizeForColumn,tileSizeForRow);
+        tileSize = Mathf.Clamp01(tileSize);
 
-        for (int i = 0; i < columnCount*2; i++)
+        for (int j = 0; j < columnCount; j++)
         {
-            for (int j = 0; j < rowCount; j++)
+            for (int i = 0; i < rowCount; i++)
             {
                 var tile = Instantiate(TilePrefab,TileParent);
 
-                tile.transform.position = new Vector3(gridStartPoint.position.x+(j * tileSize)
-                    , gridStartPoint.position.y+(columnCount*tileSize)-(i * tileSize), 0);
-                tile.transform.localScale = Vector3.one * tileSize;
-                tile.SetTileIndex(j,i);
+                tile.InitializeTile(i,j,tileSize);
                 
-                TileManager.Instance.AddToAllTiles(tile);
+                TileManager.Instance.AddToAllTiles(tile,i,j);
             }
         }
 

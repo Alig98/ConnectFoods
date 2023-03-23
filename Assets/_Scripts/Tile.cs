@@ -40,16 +40,22 @@ public class Tile : MonoBehaviour
                 transform.localScale = m_StartScale;
                 break;
             case TileState.Selected:
-                transform.localScale = transform.localScale * 1.2f;
+                transform.localScale *= 1.2f;
                 break;
             case TileState.Fall:
                 break;
             case TileState.Pop:
                 transform.localScale = m_StartScale;
-                transform.position = new Vector3(transform.position.x
-                    , transform.position.y + ((GameManager.Instance.ColumnCount)*transform.localScale.x), 0);
+                /*transform.position = new Vector3(transform.position.x
+                    , transform.position.y + ((GameManager.Instance.ColumnCount)*transform.localScale.x), 0);*/
                 break;
         }
+    }
+
+    public void InitializeTile(int x, int y, float tileSize)
+    {
+        transform.localScale = Vector3.one * tileSize;
+        SetTileIndex(x,y);
     }
 
     public void SetState(TileState state)
@@ -66,6 +72,10 @@ public class Tile : MonoBehaviour
     public void SetTileIndex(int x, int y)
     {
         m_TileIndex = new Vector2Int(x, y);
+        var gridStartPoint = GameManager.Instance.GridStartPoint;
+        
+        transform.position = new Vector3(gridStartPoint.position.x+(x * transform.localScale.x)
+            , gridStartPoint.position.y-(y * transform.localScale.x), 0);
     }
 
     public bool ControlIfNeighbour(Tile tile)

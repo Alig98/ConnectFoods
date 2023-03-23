@@ -55,7 +55,7 @@ public class GameManager : SingletonBase<GameManager>
 
                         m_SelectedTile = hitTile;
                     }
-                    if (m_SelectedTiles.Contains(hitTile))
+                    else if (m_SelectedTiles.Contains(hitTile))
                     {
                         var hitTileIndex = m_SelectedTiles.IndexOf(hitTile);
                         var selectedTilesCount = m_SelectedTiles.Count;

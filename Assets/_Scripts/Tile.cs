@@ -46,8 +46,11 @@ public class Tile : MonoBehaviour
                 break;
             case TileState.Pop:
                 transform.localScale = m_StartScale;
-                /*transform.position = new Vector3(transform.position.x
-                    , transform.position.y + ((GameManager.Instance.ColumnCount)*transform.localScale.x), 0);*/
+                SetState(TileState.StandBy);
+                break;
+            case TileState.StandBy:
+                SetTileIndex(m_TileIndex.x,-1);
+                GiveRandomFruit();
                 break;
         }
     }
@@ -102,5 +105,6 @@ public enum TileState
     Idle,
     Selected,
     Fall,
-    Pop
+    Pop,
+    StandBy
 }

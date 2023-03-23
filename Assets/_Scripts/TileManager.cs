@@ -7,7 +7,7 @@ public class TileManager : SingletonBase<TileManager>
 {
     private Tile[,] m_AllTiles;
     private bool m_IsFirstUpdate;
-
+    
     private void Start()
     {
         var gameManager = GameManager.Instance;
@@ -66,4 +66,5 @@ public class TileManager : SingletonBase<TileManager>
         
         return m_AllTiles[x, y];
     }
+    
 }

@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class GridCreator : MonoBehaviour
 {
-    public int RowCount;
-    public int ColumnCount;
-    public Transform GridStartPoint;
-    public Transform GridEndPoint;
     public Tile TilePrefab;
     public Transform TileParent;
 
@@ -19,27 +15,35 @@ public class GridCreator : MonoBehaviour
 
     private void CreateGrid()
     {
-        var tileSizeForRow = Mathf.Abs((GridStartPoint.position.x - GridEndPoint.position.x)) / (RowCount-1);
-        var tileSizeForColumn = Mathf.Abs((GridStartPoint.position.y - GridEndPoint.position.y)) / (ColumnCount-1);
+        var gridStartPoint = GameManager.Instance.GridStartPoint;
+        var gridEndPoint = GameManager.Instance.GridEndPoint;
+        var rowCount = GameManager.Instance.RowCount;
+        var columnCount = GameManager.Instance.ColumnCount;
+        
+        var tileSizeForRow = Mathf.Abs((gridStartPoint.position.x - gridEndPoint.position.x)) / (rowCount-1);
+        var tileSizeForColumn = Mathf.Abs((gridStartPoint.position.y - gridEndPoint.position.y)) / (columnCount-1);
 
         var tileSize = (tileSizeForColumn > tileSizeForRow ? tileSizeForRow : tileSizeForColumn);
         tileSize = tileSize > 1 ? 1 : tileSize;
 
-        for (int i = 0; i < ColumnCount*2; i++)
+        for (int i = 0; i < columnCount*2; i++)
         {
-            for (int j = 0; j < RowCount; j++)
+            for (int j = 0; j < rowCount; j++)
             {
                 var tile = Instantiate(TilePrefab,TileParent);
 
-                tile.transform.position = new Vector3(GridStartPoint.position.x+(j * tileSize)
-                    , GridStartPoint.position.y+(ColumnCount*tileSize)-(i * tileSize), 0);
+                tile.transform.position = new Vector3(gridStartPoint.position.x+(j * tileSize)
+                    , gridStartPoint.position.y+(columnCount*tileSize)-(i * tileSize), 0);
                 tile.transform.localScale = Vector3.one * tileSize;
+                tile.SetTileIndex(j,i);
+                
+                TileManager.Instance.AddToAllTiles(tile);
             }
         }
 
-        if (GridStartPoint.position.x+(RowCount-1 * tileSize) < GridEndPoint.position.x)
+        if (gridStartPoint.position.x+(rowCount-1 * tileSize) < gridEndPoint.position.x)
         {
-            var dif = (GridEndPoint.position.x - (GridStartPoint.position.x + ((RowCount-1) * tileSize)))*.5f;
+            var dif = (gridEndPoint.position.x - (gridStartPoint.position.x + ((rowCount-1) * tileSize)))*.5f;
 
             var pos = TileParent.position;
             pos.x += dif;

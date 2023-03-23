@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,7 +26,7 @@ public class Tile : MonoBehaviour
         m_StartScale = transform.localScale;
     }
 
-    private void GiveRandomFruit()
+    public void GiveRandomFruit()
     {
         var tileTypeIndex = Random.Range(0, TileTypeSprites.Count);
         m_TileType = (TileTypes) tileTypeIndex;
@@ -43,12 +44,15 @@ public class Tile : MonoBehaviour
                 transform.localScale *= 1.2f;
                 break;
             case TileState.Fall:
+                SetTileIndex(m_TileIndex.x,m_TileIndex.y+1,true);
+                SetState(TileState.Idle);
                 break;
             case TileState.Pop:
                 transform.localScale = m_StartScale;
                 SetState(TileState.StandBy);
                 break;
             case TileState.StandBy:
+                TileManager.Instance.AddToStandByTiles(this);
                 SetTileIndex(m_TileIndex.x,-1);
                 GiveRandomFruit();
                 break;
@@ -72,13 +76,23 @@ public class Tile : MonoBehaviour
         m_NeighbourTiles.Add(tile);
     }
 
-    public void SetTileIndex(int x, int y)
+    public void SetTileIndex(int x, int y, bool useTween = false)
     {
         m_TileIndex = new Vector2Int(x, y);
         var gridStartPoint = GameManager.Instance.GridStartPoint;
-        
-        transform.position = new Vector3(gridStartPoint.position.x+(x * transform.localScale.x)
-            , gridStartPoint.position.y-(y * transform.localScale.x), 0);
+
+        var targetPos = new Vector3(gridStartPoint.position.x + (x * transform.localScale.x)
+            , gridStartPoint.position.y - (y * transform.localScale.x), 0);
+        if (useTween)
+        {
+            var dif = Vector3.Distance(transform.position,targetPos);
+            transform.DOKill();
+            transform.DOMove(targetPos,.2f).SetEase(Ease.Linear);
+        }
+        else
+        {
+            transform.position = targetPos;
+        }
     }
 
     public bool ControlIfNeighbour(Tile tile)

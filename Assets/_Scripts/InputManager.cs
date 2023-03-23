@@ -74,6 +74,8 @@ public class InputManager : MonoBehaviour
                 m_SelectedTiles[i].SetState(m_SelectedTiles.Count>=3 ? TileState.Pop : TileState.Idle);
             }
                 
+            TileManager.Instance.ControlForFall();
+            
             m_SelectedTiles.Clear();
             m_SelectedTile = null;
         }

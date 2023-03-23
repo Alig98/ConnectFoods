@@ -85,9 +85,8 @@ public class Tile : MonoBehaviour
             , gridStartPoint.position.y - (y * transform.localScale.x), 0);
         if (useTween)
         {
-            var dif = Vector3.Distance(transform.position,targetPos);
             transform.DOKill();
-            transform.DOMove(targetPos,.2f).SetEase(Ease.Linear);
+            transform.DOMove(targetPos,.2f);
         }
         else
         {

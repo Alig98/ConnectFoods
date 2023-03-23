@@ -105,58 +105,37 @@ public class TileManager : SingletonBase<TileManager>
     {
         if (m_StandByTiles.Count > 0)
         {
-            InitializeFall();
+            AdjustGrid();
         }
     }
-    public void InitializeFall()
+    
+    private void AdjustGrid()
     {
-        for (int i = m_AllTiles.GetLength(0)-1; i >= 0 ; i--)
+        foreach (var standByTile in m_StandByTiles)
         {
-            for (int j = m_AllTiles.GetLength(1)-2; j >= 0; j--)
-            {
-                if (!m_AllTiles[i,j])
-                {
-                    continue;
-                }
-                if (!m_AllTiles[i,j+1])
-                {
-                    var tile = m_AllTiles[i, j];
-                    tile.SetState(TileState.Fall);
-                    m_AllTiles[i, j+1] = tile;
-                    m_AllTiles[i, j] = null;
-                }
-            }
+            ColumnFall(standByTile.TileIndex.x);
+            m_AllTiles[standByTile.TileIndex.x, 0] = standByTile;
+            standByTile.SetState(TileState.Fall);
         }
-
-        for (int i = 0; i < m_AllTiles.GetLength(0); i++)
-        {
-            if (!m_AllTiles[i,0])
-            {
-                var tile = RequestNewTile(i);
-                tile.SetState(TileState.Fall);
-                m_AllTiles[i, 0] = tile;
-            }
-        }
-
-        ControlForFall();
+        m_StandByTiles.Clear();
         
         FindNeighbourTilesForAll();
     }
 
-    private Tile RequestNewTile(int x)
+    private void ColumnFall(int x)
     {
-        for (int i = 0; i < m_StandByTiles.Count; i++)
+        for (int i = m_AllTiles.GetLength(1)-2 ; i >= 0 ; i--)
         {
-            if (m_StandByTiles[i].TileIndex.x == x)
+            if (m_AllTiles[x, i+1] == null)
             {
-                var tile = m_StandByTiles[i];
-                
-                m_StandByTiles.Remove(tile);
-
-                return tile;
+                if (!m_AllTiles[x,i])
+                {
+                    continue;
+                }
+                m_AllTiles[x,i].SetState(TileState.Fall);
+                m_AllTiles[x, i+1] = m_AllTiles[x, i];
+                m_AllTiles[x, i] = null;
             }
         }
-
-        return null;
     }
 }

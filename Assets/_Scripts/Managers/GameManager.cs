@@ -8,6 +8,7 @@ public class GameManager : SingletonBase<GameManager>
     public Transform GridEndPoint;
     public int RowCount;
     public int ColumnCount;
+    public LevelInfos LevelInfos;
     public TileInfos TileInfos;
 }
 

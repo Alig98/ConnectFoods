@@ -231,6 +231,7 @@ MonoBehaviour:
   GridEndPoint: {fileID: 278620796}
   RowCount: 3
   ColumnCount: 3
+  LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
   TileInfos: {fileID: 11400000, guid: 41c1fbcf08b4a2e41bd5a2dc1c3e8fb0, type: 2}
 --- !u!4 &544557874
 Transform:

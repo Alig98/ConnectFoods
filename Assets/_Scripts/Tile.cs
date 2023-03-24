@@ -140,9 +140,6 @@ public enum TileTypes
     Apple = 2,
     Berry = 3,
     DragonFruit = 4,
-    DragonFruit2 = 5,
-    DragonFruit3 = 6,
-    DragonFruit4 = 7,
 }
 
 public enum TileState

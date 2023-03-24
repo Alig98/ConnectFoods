@@ -18,9 +18,6 @@ MonoBehaviour:
   - {fileID: 1824179344, guid: dec705af8634429408e25f92933d6b6c, type: 3}
   - {fileID: -530942648, guid: dec705af8634429408e25f92933d6b6c, type: 3}
   - {fileID: 411512668, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 1302991574, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: -17078455, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 417798647, guid: dec705af8634429408e25f92933d6b6c, type: 3}
   ShuffleTime: 1
   ShuffleRotationTime: 0.9
   ShuffleMoveTime: 0.1

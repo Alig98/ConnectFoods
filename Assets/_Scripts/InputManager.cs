@@ -26,12 +26,12 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0) && m_SelectedTile != null)
         {
             var origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             var hit = Physics2D.Raycast(origin, Vector2.zero);
-            if (hit.collider != null && m_SelectedTile != null)
+            if (hit.collider != null)
             {
                 if (hit.collider.gameObject.layer ==(int) Layer.Tile)
                 {

@@ -21,14 +21,6 @@ public class Tile : MonoBehaviour
 
     public List<Tile> NeighbourTiles => m_NeighbourTiles;
 
-    private void Start()
-    {
-        m_TileInfos = GameManager.Instance.TileInfos;
-        GiveRandomFruit();
-        m_TileState = TileState.Idle;
-        m_StartScale = transform.localScale;
-    }
-
     public void GiveRandomFruit()
     {
         var tileTypeSprites = m_TileInfos.TileSprites;
@@ -53,6 +45,7 @@ public class Tile : MonoBehaviour
                 break;
             case TileState.Pop:
                 transform.localScale = m_StartScale;
+                EventManager.TilePopEvent.Invoke(this);
                 SetState(TileState.StandBy);
                 break;
             case TileState.StandBy:
@@ -70,6 +63,11 @@ public class Tile : MonoBehaviour
     {
         transform.localScale = Vector3.one * tileSize;
         SetTileIndex(x,y);
+        
+        m_TileInfos = GameManager.Instance.TileInfos;
+        GiveRandomFruit();
+        m_TileState = TileState.Idle;
+        m_StartScale = transform.localScale;
     }
 
     public void SetState(TileState state)

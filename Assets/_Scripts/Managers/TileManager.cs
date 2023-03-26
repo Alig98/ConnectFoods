@@ -9,14 +9,7 @@ public class TileManager : SingletonBase<TileManager>
     private bool m_IsFirstUpdate;
     private List<Tile> m_StandByTiles = new List<Tile>();
     private TileInfos m_TileInfos;
-
-    private void Start()
-    {
-        var gameManager = GameManager.Instance;
-        m_AllTiles = new Tile[gameManager.RowCount, gameManager.ColumnCount];
-        m_TileInfos = gameManager.TileInfos;
-    }
-
+    
     private void Update()
     {
         if (!m_IsFirstUpdate)
@@ -26,10 +19,18 @@ public class TileManager : SingletonBase<TileManager>
             ControlForAnyMove();
         }
     }
+    
+    public void InitializeTileManager(int rowCount, int columnCount,TileInfos tileInfos)
+    {
+        m_AllTiles = new Tile[rowCount,columnCount];
+        m_TileInfos = tileInfos;
+    }
 
-    public void AddToAllTiles(Tile tile, int x, int y)
+    public void AddToAllTiles(Tile tile, int x, int y, float tileSize)
     {
         m_AllTiles[x,y] = tile;
+        
+        tile.InitializeTile(x,y,tileSize);
     }
     
     public void FindNeighbourTilesForAll()
@@ -79,16 +80,7 @@ public class TileManager : SingletonBase<TileManager>
         m_AllTiles[tile.TileIndex.x, tile.TileIndex.y] = null;
     }
 
-    public void ControlForFall()
-    {
-        if (m_StandByTiles.Count > 0)
-        {
-            AdjustGrid();
-            Invoke(nameof(ControlForAnyMove),m_TileInfos.FallTime);
-        }
-    }
-    
-    private void AdjustGrid()
+    public void AdjustGrid()
     {
         foreach (var standByTile in m_StandByTiles)
         {
@@ -99,6 +91,8 @@ public class TileManager : SingletonBase<TileManager>
         m_StandByTiles.Clear();
         
         FindNeighbourTilesForAll();
+        
+        Invoke(nameof(ControlForAnyMove),m_TileInfos.FallTime);
     }
 
     private void ColumnFall(int x)

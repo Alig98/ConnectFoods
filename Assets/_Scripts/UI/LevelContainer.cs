@@ -15,6 +15,16 @@ public class LevelContainer : MonoBehaviour
     {
         LevelNumberText.text = $"Level {info.LevelNumber}";
 
+        var highScoreData = Registry.GetHighScoreDatas();
+        if (highScoreData.Count >= info.LevelNumber)
+        {
+            HighScoreText.text = highScoreData[info.LevelNumber - 1].ToString();
+        }
+        else
+        {
+            HighScoreText.text = "0";
+        }
+        
         ObjectivesText.text = "";
         var objectives = info.TargetObjectives;
         for (int i = 0; i < objectives.Count; i++)

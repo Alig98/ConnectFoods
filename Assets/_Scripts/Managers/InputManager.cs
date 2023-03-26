@@ -9,6 +9,8 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.GameState != GameState.Playing) return;
+        
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             var origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -70,15 +72,27 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            for (int i = 0; i < m_SelectedTiles.Count; i++)
+            var selectedTileCount = m_SelectedTiles.Count;
+            if (selectedTileCount>=3)
             {
-                m_SelectedTiles[i].SetState(m_SelectedTiles.Count>=3 ? TileState.Pop : TileState.Idle);
+                SetSelectedTileState(TileState.Pop);
+                EventManager.MoveHasBeenMade.Invoke();
             }
-                
-            TileManager.Instance.ControlForFall();
-            
-            m_SelectedTiles.Clear();
-            m_SelectedTile = null;
+            else
+            {
+                SetSelectedTileState(TileState.Idle);
+            }
         }
+    }
+
+    private void SetSelectedTileState(TileState state)
+    {
+        for (int i = 0; i < m_SelectedTiles.Count; i++)
+        {
+            m_SelectedTiles[i].SetState(state);
+        }
+        
+        m_SelectedTiles.Clear();
+        m_SelectedTile = null;
     }
 }

@@ -16,7 +16,6 @@ public class InfiniteScrollView : StandaloneInputModule,IDragHandler
     protected override void Start()
     {
         //execution order'ın hiçbir aşamasında veri güncellenmediği için böyle bir çözüm buldum.
-        Invoke(nameof(OnScreenSizeChanged),.01f);
 
         var currentLevel = Registry.CurrentLevel;
         for (int i = 0; i < m_LevelsRectTransformList.Count; i++)
@@ -26,7 +25,10 @@ public class InfiniteScrollView : StandaloneInputModule,IDragHandler
     }
 
     //private methods
-    private void OnScreenSizeChanged()
+
+
+    //public methods
+    public void UpdateScreenData()
     {
         m_LastScreenWidth = Screen.width;
         m_LastScreenHeight = Screen.height;
@@ -34,8 +36,7 @@ public class InfiniteScrollView : StandaloneInputModule,IDragHandler
         m_FirstSibblingStartPos = m_LevelsRectTransformList[0].transform.localPosition;
         m_LastSibblingStartPos = m_LevelsRectTransformList[m_LevelsRectTransformList.Count - 1].transform.localPosition;
     }
-
-    //public methods
+    
     public void OnDrag(PointerEventData data)
     {
         var firstUnit = m_LevelsRectTransformList[0];
@@ -50,7 +51,7 @@ public class InfiniteScrollView : StandaloneInputModule,IDragHandler
         //Eğer resolution değişirse start pozisyonları tekrar alıyor
         if (m_LastScreenWidth != Screen.width || m_LastScreenHeight != Screen.height)
         {
-            OnScreenSizeChanged();
+            UpdateScreenData();
         }
         
         //Scroll yapıyor.

@@ -15,8 +15,8 @@ MonoBehaviour:
   LevelInfoList:
   - LevelNumber: 1
     TotalMove: 10
-    RowCount: 5
-    ColumnCount: 5
+    RowCount: 4
+    ColumnCount: 4
     TargetObjectives:
     - TargetType: 0
       TargetCount: 3

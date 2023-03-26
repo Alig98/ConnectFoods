@@ -6,6 +6,8 @@ public class InputManager : MonoBehaviour
     //Fields
     private Tile m_SelectedTile;
     private List<Tile> m_SelectedTiles = new List<Tile>();
+    [SerializeField] private Camera m_MainCamera;
+    private Collider2D m_LastHitTile;
 
     //Unity Methods
     void Update()
@@ -14,7 +16,7 @@ public class InputManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            var origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var origin = m_MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
             var hit = Physics2D.Raycast(origin, Vector2.zero);
             if (hit.collider != null)
@@ -25,20 +27,23 @@ public class InputManager : MonoBehaviour
                     m_SelectedTile.SetState(TileState.Selected);
                     
                     m_SelectedTiles.Add(m_SelectedTile);
+
+                    m_LastHitTile = hit.collider;
                 }
             }
         }
 
         if (Input.GetKey(KeyCode.Mouse0) && m_SelectedTile != null)
         {
-            var origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var origin = m_MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
             var hit = Physics2D.Raycast(origin, Vector2.zero);
             if (hit.collider != null)
             {
-                if (hit.collider.gameObject.layer ==(int) Layer.Tile)
+                if (hit.collider.gameObject.layer ==(int) Layer.Tile && m_LastHitTile != hit.collider)
                 {
                     var hitTile = hit.collider.GetComponent<Tile>();
+                    m_LastHitTile = hit.collider;
 
                     if (hitTile.TileType == m_SelectedTile.TileType && !m_SelectedTiles.Contains(hitTile)
                                                                     && m_SelectedTile.ControlIfNeighbour(hitTile) 
@@ -77,6 +82,7 @@ public class InputManager : MonoBehaviour
             
             m_SelectedTiles.Clear();
             m_SelectedTile = null;
+            m_LastHitTile = null;
         }
     }
 }

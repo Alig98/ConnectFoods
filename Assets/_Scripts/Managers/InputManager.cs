@@ -73,27 +73,10 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            var selectedTileCount = m_SelectedTiles.Count;
-            if (selectedTileCount>=3)
-            {
-                SetSelectedTileState(TileState.Pop);
-                EventManager.MoveHasBeenMade.Invoke();
-            }
-            else
-            {
-                SetSelectedTileState(TileState.Idle);
-            }
+            EventManager.MoveHasBeenMade.Invoke(m_SelectedTiles);
+            
+            m_SelectedTiles.Clear();
+            m_SelectedTile = null;
         }
-    }
-
-    private void SetSelectedTileState(TileState state)
-    {
-        for (int i = 0; i < m_SelectedTiles.Count; i++)
-        {
-            m_SelectedTiles[i].SetState(state);
-        }
-        
-        m_SelectedTiles.Clear();
-        m_SelectedTile = null;
     }
 }

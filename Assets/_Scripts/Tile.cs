@@ -131,7 +131,6 @@ public class Tile : MonoBehaviour
                 break;
             case TileState.Pop:
                 transform.localScale = m_StartScale;
-                EventManager.TilePopEvent.Invoke(this);
                 PlayPopEffect();
                 SetState(TileState.StandBy);
                 break;

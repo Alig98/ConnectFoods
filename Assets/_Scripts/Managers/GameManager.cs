@@ -21,6 +21,9 @@ public class GameManager : SingletonBase<GameManager>
     public Transform GridStartPoint => m_GridStartPoint;
     public TileInfos TileInfos => m_TileInfos;
     public Transform EffectParent => m_EffectParent;
+    public int Score => m_Score;
+    public int TotalMove => m_TotalMove;
+    public List<TargetObjective> TargetObjectives => m_TargetObjectives;
 
     //Unity Methods
     protected override void Awake()
@@ -53,13 +56,11 @@ public class GameManager : SingletonBase<GameManager>
     private void OnEnable()
     {
         EventManager.MoveHasBeenMade.AddListener(OnMoveHasBeenMade);
-        EventManager.TilePopEvent.AddListener(OnTilePop);
     }
 
     private void OnDestroy()
     {
         EventManager.MoveHasBeenMade.RemoveListener(OnMoveHasBeenMade);
-        EventManager.TilePopEvent.RemoveListener(OnTilePop);
     }
 
     //Private Methods
@@ -83,11 +84,30 @@ public class GameManager : SingletonBase<GameManager>
         }
     }
 
-    private void OnMoveHasBeenMade()
+    private void OnMoveHasBeenMade(List<Tile> selectedTiles)
     {
-        TileManager.Instance.AdjustGrid();
-
-        m_TotalMove -= 1;
+        if (selectedTiles.Count <= 0) return;
+        
+        if (selectedTiles.Count >= 3)
+        {
+            for (int i = 0; i < selectedTiles.Count; i++)
+            {
+                var tile = selectedTiles[i];
+                OnTilePop(tile);
+            }
+            
+            m_TotalMove -= 1;
+            TileManager.Instance.AdjustGrid();
+            
+            EventManager.StatisticsChanged.Invoke();
+        }
+        else
+        {
+            for (int i = 0; i < selectedTiles.Count; i++)
+            {
+                selectedTiles[i].SetState(TileState.Idle);
+            }
+        }
 
         CheckGameState();
     }
@@ -105,7 +125,7 @@ public class GameManager : SingletonBase<GameManager>
             }
         }
         
-        CheckGameState();
+        tile.SetState(TileState.Pop);
     }
 
     private void GameOver()

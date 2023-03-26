@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -7,12 +8,18 @@ public class Tile : MonoBehaviour
 {
     //Fields
     [SerializeField] private SpriteRenderer m_ObjectModel;
+    [SerializeField] private SpriteRenderer m_TileBG;
+    [SerializeField] private SpriteRenderer m_TileModel;
     private TileState m_TileState;
     private TileTypes m_TileType;
     private Vector3 m_StartScale;
     private List<Tile> m_NeighbourTiles = new List<Tile>();
     private Vector2Int m_TileIndex;
     private TileInfos m_TileInfos;
+    private ParticleSystem m_PopEffect;
+    private int m_ObjectModelDefaultSortingOrder;
+    private int m_TileBGDefaultSortingOrder;
+    private int m_TileodelDefaultSortingOrder;
 
     //Properties
     public TileTypes TileType => m_TileType;
@@ -30,6 +37,10 @@ public class Tile : MonoBehaviour
         GiveRandomFruit();
         m_TileState = TileState.Idle;
         m_StartScale = transform.localScale;
+
+        m_ObjectModelDefaultSortingOrder = m_ObjectModel.sortingOrder;
+        m_TileBGDefaultSortingOrder = m_TileBG.sortingOrder;
+        m_TileodelDefaultSortingOrder = m_TileModel.sortingOrder;
     }
 
     public void SetState(TileState state)
@@ -108,9 +119,11 @@ public class Tile : MonoBehaviour
         {
             case TileState.Idle:
                 transform.localScale = m_StartScale;
+                SetTileIdle();
                 break;
             case TileState.Selected:
-                transform.localScale *= 1.2f;
+                transform.localScale *= 1.15f;
+                SetTileSelected();
                 break;
             case TileState.Fall:
                 SetTileIndex(m_TileIndex.x,m_TileIndex.y+1,true);
@@ -119,6 +132,7 @@ public class Tile : MonoBehaviour
             case TileState.Pop:
                 transform.localScale = m_StartScale;
                 EventManager.TilePopEvent.Invoke(this);
+                PlayPopEffect();
                 SetState(TileState.StandBy);
                 break;
             case TileState.StandBy:
@@ -130,6 +144,36 @@ public class Tile : MonoBehaviour
                 ShuffleTile();
                 break;
         }
+    }
+
+    private void PlayPopEffect()
+    {
+        if (m_PopEffect == null)
+        {
+            m_PopEffect = Instantiate(m_TileInfos.PopParticle);
+            m_PopEffect.transform.localScale = transform.localScale;
+            m_PopEffect.transform.parent = GameManager.Instance.EffectParent;
+        }
+
+        m_PopEffect.transform.position = transform.position;
+        
+        m_PopEffect.Play();
+    }
+    
+    private void SetTileSelected()
+    {
+        m_TileBG.gameObject.SetActive(true);
+        m_ObjectModel.sortingOrder =m_ObjectModelDefaultSortingOrder+10;
+        m_TileBG.sortingOrder = m_TileBGDefaultSortingOrder+10;
+        m_TileModel.sortingOrder = m_TileodelDefaultSortingOrder+10;
+    }
+
+    private void SetTileIdle()
+    {
+        m_TileBG.gameObject.SetActive(false);
+        m_ObjectModel.sortingOrder = m_ObjectModelDefaultSortingOrder;
+        m_TileBG.sortingOrder = m_TileBGDefaultSortingOrder;
+        m_TileModel.sortingOrder = m_TileodelDefaultSortingOrder;
     }
 }
 

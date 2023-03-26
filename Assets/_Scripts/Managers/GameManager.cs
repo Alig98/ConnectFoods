@@ -9,6 +9,7 @@ public class GameManager : SingletonBase<GameManager>
     [SerializeField] private Transform m_GridEndPoint;
     [SerializeField] private LevelInfos m_LevelInfos;
     [SerializeField] private TileInfos m_TileInfos;
+    [SerializeField] private Transform m_EffectParent;
     private GameState m_GameState;
     private int m_Score;
     private int m_TotalMove;
@@ -19,6 +20,7 @@ public class GameManager : SingletonBase<GameManager>
     public GameState GameState => m_GameState;
     public Transform GridStartPoint => m_GridStartPoint;
     public TileInfos TileInfos => m_TileInfos;
+    public Transform EffectParent => m_EffectParent;
 
     //Unity Methods
     protected override void Awake()
@@ -114,7 +116,7 @@ public class GameManager : SingletonBase<GameManager>
         Registry.ShowEndLevelSituation = true;
         Registry.Save();
         
-        Invoke(nameof(LoadMainMenu),1);
+        Invoke(nameof(LoadMainMenu),TileInfos.FallTime+.1f);
     }
 
     private void LevelPassed()
@@ -131,7 +133,7 @@ public class GameManager : SingletonBase<GameManager>
         Registry.ShowEndLevelSituation = true;
         Registry.Save();
         
-        Invoke(nameof(LoadMainMenu),1);
+        Invoke(nameof(LoadMainMenu),TileInfos.FallTime+.1f);
     }
 
     private bool ControlHighScore()

@@ -21,4 +21,5 @@ MonoBehaviour:
   ShuffleTime: 1
   ShuffleRotationTime: 0.9
   ShuffleMoveTime: 0.1
-  FallTime: 0.2
+  FallTime: 1
+  PopParticle: {fileID: 3688732968140674350, guid: 2683af71e0832534380c981b518e91c7, type: 3}

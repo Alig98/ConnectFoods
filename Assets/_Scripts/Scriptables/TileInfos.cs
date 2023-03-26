@@ -9,4 +9,5 @@ public class TileInfos : ScriptableObject
     public float ShuffleRotationTime;
     public float ShuffleMoveTime;
     public float FallTime;
+    public ParticleSystem PopParticle;
 }

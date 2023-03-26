@@ -65,3 +65,12 @@ MonoBehaviour:
       TargetCount: 10
     - TargetType: 0
       TargetCount: 10
+  - LevelNumber: 7
+    TotalMove: 20
+    RowCount: 9
+    ColumnCount: 9
+    TargetObjectives:
+    - TargetType: 1
+      TargetCount: 10
+    - TargetType: 3
+      TargetCount: 15

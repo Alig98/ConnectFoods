@@ -418,9 +418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d2de9d4b9acf6469ec1b71fbd1fee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LevelNumber: 0
-  LevelText: {fileID: 2313679636243473705}
-  ButtonGraphics: {fileID: 1557640355461560515}
-  AvailableColor: {r: 0.08235294, g: 1, b: 0, a: 1}
-  NotAvailableColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.65882355}
-  UnderConstructionText: {fileID: 3687320385942864277}
+  m_LevelText: {fileID: 2313679636243473705}
+  m_ButtonGraphics: {fileID: 1557640355461560515}
+  m_AvailableColor: {r: 0.08235294, g: 1, b: 0, a: 1}
+  m_NotAvailableColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.8039216}
+  m_UnderConstructionText: {fileID: 3687320385942864277}

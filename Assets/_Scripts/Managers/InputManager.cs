@@ -1,12 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    //Fields
     private Tile m_SelectedTile;
     private List<Tile> m_SelectedTiles = new List<Tile>();
 
+    //Unity Methods
     void Update()
     {
         if (GameManager.Instance.GameState != GameState.Playing) return;

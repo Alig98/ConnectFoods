@@ -1,15 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TileManager : SingletonBase<TileManager>
 {
+    //Fields
     private Tile[,] m_AllTiles;
     private bool m_IsFirstUpdate;
     private List<Tile> m_StandByTiles = new List<Tile>();
     private TileInfos m_TileInfos;
     
+    //Unity Methods
     private void Update()
     {
         if (!m_IsFirstUpdate)
@@ -20,6 +21,7 @@ public class TileManager : SingletonBase<TileManager>
         }
     }
     
+    //Public Methods
     public void InitializeTileManager(int rowCount, int columnCount,TileInfos tileInfos)
     {
         m_AllTiles = new Tile[rowCount,columnCount];
@@ -95,6 +97,7 @@ public class TileManager : SingletonBase<TileManager>
         Invoke(nameof(ControlForAnyMove),m_TileInfos.FallTime);
     }
 
+    //Private Methods
     private void ColumnFall(int x)
     {
         for (int i = m_AllTiles.GetLength(1)-2 ; i >= 0 ; i--)

@@ -1,13 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GridCreator : SingletonBase<GridCreator>
 {
-    public Tile TilePrefab;
-    public Transform TileParent;
+    //Fields
+    [SerializeField] private Tile m_TilePrefab;
+    [SerializeField] private Transform m_TileParent;
 
+    //Public Methods
     public void CreateGrid(Vector3 gridStartPoint,Vector3 gridEndPoint,int rowCount,int columnCount)
     {
         var tileSizeForRow = Mathf.Abs((gridStartPoint.x - gridEndPoint.x)) / (rowCount-1);
@@ -20,7 +19,7 @@ public class GridCreator : SingletonBase<GridCreator>
         {
             for (int i = 0; i < rowCount; i++)
             {
-                var tile = Instantiate(TilePrefab,TileParent);
+                var tile = Instantiate(m_TilePrefab,m_TileParent);
                 
                 TileManager.Instance.AddToAllTiles(tile,i,j,tileSize);
             }
@@ -30,10 +29,10 @@ public class GridCreator : SingletonBase<GridCreator>
         {
             var dif = (gridEndPoint.x - (gridStartPoint.x + ((rowCount-1) * tileSize)))*.5f;
 
-            var pos = TileParent.position;
+            var pos = m_TileParent.position;
             pos.x += dif;
 
-            TileParent.position = pos;
+            m_TileParent.position = pos;
         }
     }
 }

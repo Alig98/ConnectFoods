@@ -1,22 +1,22 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
-    public LevelInfos LevelInfos;
-    public TextMeshProUGUI ObjectivesText;
-    public TextMeshProUGUI ScoreText;
-    public TextMeshProUGUI TotalMovesText;
+    //Fields
+    [SerializeField] private LevelInfos m_LevelInfos;
+    [SerializeField] private TextMeshProUGUI m_ObjectivesText;
+    [SerializeField] private TextMeshProUGUI m_ScoreText;
+    [SerializeField] private TextMeshProUGUI m_TotalMovesText;
 
     private int m_Score;
     private int m_TotalMove;
     private List<TargetObjective> m_TargetObjectives = new List<TargetObjective>();
 
-    public LevelInfo LevelInfo => LevelInfos.LevelInfoList[Registry.LoadedLevelIndex - 1];
+    public LevelInfo LevelInfo => m_LevelInfos.LevelInfoList[Registry.LoadedLevelIndex - 1];
     
+    //Unity Methods
     private void Awake()
     {
         m_TotalMove = LevelInfo.TotalMove;
@@ -33,6 +33,7 @@ public class GUIManager : MonoBehaviour
         UpdateUI();
     }
     
+    //Private Methods
     private void OnEnable()
     {
         EventManager.MoveHasBeenMade.AddListener(OnMoveHasBeenMade);
@@ -69,14 +70,14 @@ public class GUIManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        TotalMovesText.text = m_TotalMove.ToString();
-        ScoreText.text = m_Score.ToString();
+        m_TotalMovesText.text = m_TotalMove.ToString();
+        m_ScoreText.text = m_Score.ToString();
 
-        ObjectivesText.text = "";
+        m_ObjectivesText.text = "";
 
         for (int i = 0; i < m_TargetObjectives.Count; i++)
         {
-            ObjectivesText.text +=
+            m_ObjectivesText.text +=
                 $"{m_TargetObjectives[i].TargetCount}x <sprite=\"Foods\" index={(int)m_TargetObjectives[i].TargetType}>    ";
         }
     }

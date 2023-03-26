@@ -1,44 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
 public class LevelContainer : MonoBehaviour
 {
-    public TextMeshProUGUI LevelNumberText;
-    public TextMeshProUGUI HighScoreText;
-    public TextMeshProUGUI ObjectivesText;
-    public bool IsOpen;
+    //Fields
+    [SerializeField] private TextMeshProUGUI m_LevelNumberText;
+    [SerializeField] private TextMeshProUGUI m_HighScoreText;
+    [SerializeField] private TextMeshProUGUI m_ObjectivesText;
+    private bool m_IsOpen;
 
+    //Properties
+    public bool IsOpen => m_IsOpen;
+
+    //Public Methods
     public void UpdateInfos(LevelInfo info)
     {
-        LevelNumberText.text = $"Level {info.LevelNumber}";
+        m_LevelNumberText.text = $"Level {info.LevelNumber}";
 
         var highScoreData = Registry.GetHighScoreDatas();
         if (highScoreData.Count >= info.LevelNumber)
         {
-            HighScoreText.text = highScoreData[info.LevelNumber - 1].ToString();
+            m_HighScoreText.text = highScoreData[info.LevelNumber - 1].ToString();
         }
         else
         {
-            HighScoreText.text = "0";
+            m_HighScoreText.text = "0";
         }
         
-        ObjectivesText.text = "";
+        m_ObjectivesText.text = "";
         var objectives = info.TargetObjectives;
         for (int i = 0; i < objectives.Count; i++)
         {
-            ObjectivesText.text +=
+            m_ObjectivesText.text +=
                 $"{objectives[i].TargetCount}x <sprite=\"Foods\" index={(int)objectives[i].TargetType}>    ";
         }
 
-        IsOpen = true;
+        m_IsOpen = true;
     }
 
     public void CloseContainer()
     {
-        IsOpen = false;
+        m_IsOpen = false;
         transform.DOScale(Vector3.zero, .1f);
     }
 }

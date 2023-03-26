@@ -1,25 +1,26 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBase<GameManager>
 {
-    public Transform GridStartPoint;
-    public Transform GridEndPoint;
-    public LevelInfos LevelInfos;
-    public TileInfos TileInfos;
-
+    //Fields
+    [SerializeField] private Transform m_GridStartPoint;
+    [SerializeField] private Transform m_GridEndPoint;
+    [SerializeField] private LevelInfos m_LevelInfos;
+    [SerializeField] private TileInfos m_TileInfos;
     private GameState m_GameState;
     private int m_Score;
     private int m_TotalMove;
     private List<TargetObjective> m_TargetObjectives = new List<TargetObjective>();
 
-    public LevelInfo LevelInfo => LevelInfos.LevelInfoList[Registry.LoadedLevelIndex - 1];
-
+    //Properties
+    public LevelInfo LevelInfo => m_LevelInfos.LevelInfoList[Registry.LoadedLevelIndex - 1];
     public GameState GameState => m_GameState;
+    public Transform GridStartPoint => m_GridStartPoint;
+    public TileInfos TileInfos => m_TileInfos;
 
+    //Unity Methods
     protected override void Awake()
     {
         base.Awake();
@@ -39,9 +40,9 @@ public class GameManager : SingletonBase<GameManager>
 
     private void Start()
     {
-        TileManager.Instance.InitializeTileManager(LevelInfo.RowCount,LevelInfo.ColumnCount,TileInfos);
+        TileManager.Instance.InitializeTileManager(LevelInfo.RowCount,LevelInfo.ColumnCount,m_TileInfos);
         
-        GridCreator.Instance.CreateGrid(GridStartPoint.position, GridEndPoint.position, LevelInfo.RowCount,
+        GridCreator.Instance.CreateGrid(m_GridStartPoint.position, m_GridEndPoint.position, LevelInfo.RowCount,
             LevelInfo.ColumnCount);
 
         Registry.GetHighScoreDatas();
@@ -59,7 +60,7 @@ public class GameManager : SingletonBase<GameManager>
         EventManager.TilePopEvent.RemoveListener(OnTilePop);
     }
 
-    //todo:
+    //Private Methods
     private void CheckGameState()
     {
         if (m_GameState != GameState.Playing) return;
@@ -122,7 +123,7 @@ public class GameManager : SingletonBase<GameManager>
 
         var isHighScore = ControlHighScore();
 
-        if (Registry.CurrentLevel <= LevelInfo.LevelNumber && Registry.CurrentLevel < LevelInfos.LevelInfoList.Count)
+        if (Registry.CurrentLevel <= LevelInfo.LevelNumber && Registry.CurrentLevel < m_LevelInfos.LevelInfoList.Count)
         {
             Registry.CurrentLevel = LevelInfo.LevelNumber+1;
         }
@@ -158,6 +159,7 @@ public class GameManager : SingletonBase<GameManager>
     }
 }
 
+//Enums
 public enum GameState
 {
     Playing,

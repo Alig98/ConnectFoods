@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,12 +15,6 @@ public class LevelInfo
     public int RowCount;
     public int ColumnCount;
     public List<TargetObjective> TargetObjectives;
-    public String m_IsCompleted;
-
-    public void SetLevelSituation(bool value)
-    {
-        m_IsCompleted = $"{value}";
-    }
 }
 
 [System.Serializable]

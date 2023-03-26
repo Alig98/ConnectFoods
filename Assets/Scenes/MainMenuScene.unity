@@ -699,11 +699,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0162b6b10c279fc4e94b61562acf9dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelsContainer: {fileID: 1493095900}
-  LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
-  LevelContainer: {fileID: 448825594}
-  LevelEndContainer: {fileID: 483267141}
-  InfiniteScrollView: {fileID: 2019897325}
+  m_LevelsContainer: {fileID: 1493095900}
+  m_LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
+  m_LevelContainer: {fileID: 448825594}
+  m_LevelEndContainer: {fileID: 483267141}
+  m_InfiniteScrollView: {fileID: 2019897325}
 --- !u!114 &430824078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,10 +885,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8275585338f2d84284aa81905543a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelNumberText: {fileID: 304396132}
-  HighScoreText: {fileID: 1409083038}
-  ObjectivesText: {fileID: 1794103587}
-  IsOpen: 0
+  m_LevelNumberText: {fileID: 304396132}
+  m_HighScoreText: {fileID: 1409083038}
+  m_ObjectivesText: {fileID: 1794103587}
 --- !u!1 &483267139
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,10 +943,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a747d298736634fac09343c8606a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelText: {fileID: 4601533}
-  NewHighScoreText: {fileID: 144129020}
-  NewHighScoreAmountText: {fileID: 1300584209}
-  LevelSituationText: {fileID: 992481332}
+  m_LevelText: {fileID: 4601533}
+  m_NewHighScoreText: {fileID: 144129020}
+  m_NewHighScoreAmountText: {fileID: 1300584209}
+  m_LevelSituationText: {fileID: 992481332}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

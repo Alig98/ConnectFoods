@@ -241,10 +241,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b5a505de8f0fc4aa7ec64a29aa8fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
-  ObjectivesText: {fileID: 555254476}
-  ScoreText: {fileID: 2045203005}
-  TotalMovesText: {fileID: 620174651}
+  m_LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
+  m_ObjectivesText: {fileID: 555254476}
+  m_ScoreText: {fileID: 2045203005}
+  m_TotalMovesText: {fileID: 620174651}
 --- !u!1 &223004621
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,10 +416,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbac5f86cac9804b9867dde0d3d3470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridStartPoint: {fileID: 694671464}
-  GridEndPoint: {fileID: 278620796}
-  LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
-  TileInfos: {fileID: 11400000, guid: 41c1fbcf08b4a2e41bd5a2dc1c3e8fb0, type: 2}
+  m_GridStartPoint: {fileID: 694671464}
+  m_GridEndPoint: {fileID: 278620796}
+  m_LevelInfos: {fileID: 11400000, guid: 50c549b18b7a93f41884393e6d0f3941, type: 2}
+  m_TileInfos: {fileID: 11400000, guid: 41c1fbcf08b4a2e41bd5a2dc1c3e8fb0, type: 2}
 --- !u!4 &544557874
 Transform:
   m_ObjectHideFlags: 0
@@ -1104,8 +1104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02d18d4e68e67b46a86a37273ed7a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TilePrefab: {fileID: -5789250113530315841, guid: 6bb87060b2e316447ae18c68b8bf2a63, type: 3}
-  TileParent: {fileID: 2057749732}
+  m_TilePrefab: {fileID: -5789250113530315841, guid: 6bb87060b2e316447ae18c68b8bf2a63, type: 3}
+  m_TileParent: {fileID: 2057749732}
 --- !u!4 &994366796
 Transform:
   m_ObjectHideFlags: 0

@@ -47,16 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd32d95da38fdc478aa6df58e7c4b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TileTypeSprites:
-  - {fileID: 1055257353, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 100115094, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 1824179344, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: -530942648, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 411512668, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 1302991574, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: -17078455, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  - {fileID: 417798647, guid: dec705af8634429408e25f92933d6b6c, type: 3}
-  ObjectModel: {fileID: 8758972361844719274}
+  m_ObjectModel: {fileID: 8758972361844719274}
 --- !u!61 &3380023430336576021
 BoxCollider2D:
   m_ObjectHideFlags: 0

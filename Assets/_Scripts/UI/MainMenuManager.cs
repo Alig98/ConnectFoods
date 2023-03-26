@@ -1,19 +1,21 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuManager : SingletonBase<MainMenuManager>
 {
-    public GameObject LevelsContainer;
-    public LevelInfos LevelInfos;
-    public LevelContainer LevelContainer;
-    public LevelEndContainer LevelEndContainer;
-    public InfiniteScrollView InfiniteScrollView;
+    //Fields
+    [SerializeField] private GameObject m_LevelsContainer;
+    [SerializeField] private LevelInfos m_LevelInfos;
+    [SerializeField] private LevelContainer m_LevelContainer;
+    [SerializeField] private LevelEndContainer m_LevelEndContainer;
+    [SerializeField] private InfiniteScrollView m_InfiniteScrollView;
     private int m_SelectedLevel;
 
+    //Properties
+    public LevelInfos LevelInfos => m_LevelInfos;
+
+    //Override Methods
     protected override void Awake()
     {
         base.Awake();
@@ -28,37 +30,39 @@ public class MainMenuManager : SingletonBase<MainMenuManager>
             ShowEndLevelSituation();
         }
     }
-
+    
+    //Private Methods
     private void ShowEndLevelSituation()
     {
         var lastLevelDatas = Registry.GetLastPlayedLevelDatas();
         
-        LevelEndContainer.UpdateUI(lastLevelDatas[0],lastLevelDatas[1],lastLevelDatas[2]);
-        LevelEndContainer.transform.DOScale(Vector3.one, .1f);
+        m_LevelEndContainer.UpdateUI(lastLevelDatas[0],lastLevelDatas[1],lastLevelDatas[2]);
+        m_LevelEndContainer.transform.DOScale(Vector3.one, .1f);
         Registry.ShowEndLevelSituation = false;
         Registry.Save();
     }
 
+    //Public Methods
     public void OpenLevelList()
     {
-        InfiniteScrollView.UpdateScreenData();
-        LevelsContainer.transform.DOKill();
-        LevelsContainer.transform.DOScale(Vector3.one, .1f);
+        m_InfiniteScrollView.UpdateScreenData();
+        m_LevelsContainer.transform.DOKill();
+        m_LevelsContainer.transform.DOScale(Vector3.one, .1f);
     }
 
     public void CloseLevelList()
     {
-        LevelsContainer.transform.DOKill();
-        LevelsContainer.transform.DOScale(Vector3.zero, .1f);
+        m_LevelsContainer.transform.DOKill();
+        m_LevelsContainer.transform.DOScale(Vector3.zero, .1f);
     }
 
     public void OpenLevelContainer(int level)
     {
-        if (LevelContainer.IsOpen) return;
+        if (m_LevelContainer.IsOpen) return;
 
         m_SelectedLevel = level;
-        LevelContainer.UpdateInfos(LevelInfos.LevelInfoList[level-1]);
-        LevelContainer.transform.DOScale(Vector3.one, .1f);
+        m_LevelContainer.UpdateInfos(m_LevelInfos.LevelInfoList[level-1]);
+        m_LevelContainer.transform.DOScale(Vector3.one, .1f);
     }
 
     public void PlayLevel()
